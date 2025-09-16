@@ -1,0 +1,8 @@
+route:
+  group_wait: 0s
+  receiver: webhook-receiver
+
+receivers:
+  - name: "webhook-receiver"
+    webhook_configs:
+      - url: https://webhook.site/42c7199d-79cf-4b0a-b45d-22718742f689
