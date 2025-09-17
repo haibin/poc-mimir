@@ -12,52 +12,19 @@ services:
     volumes:
       - minio-data:/data
 
-  load-balancer:
-    image: nginx:latest
-    volumes:
-      - ./config/nginx.conf:/etc/nginx/nginx.conf:ro
+  mimir:
+    image: grafana/mimir:latest
+    command: ["-config.file=/etc/mimir.yaml"]
+    hostname: mimir
     depends_on:
-      - "mimir-1"
-      - "mimir-2"
-      - "mimir-3"
+      - minio
+    volumes:
+      - ./config/mimir.yaml:/etc/mimir.yaml
+      - ./config/alertmanager-fallback-config.yaml:/etc/alertmanager-fallback-config.yaml
+      - mimir-data:/data
     ports:
-      - 9009:9009
-
-  mimir-1:
-    image: grafana/mimir:latest
-    command: ["-config.file=/etc/mimir.yaml"]
-    hostname: mimir-1
-    depends_on:
-      - minio
-    volumes:
-      - ./config/mimir.yaml:/etc/mimir.yaml
-      - ./config/alertmanager-fallback-config.yaml:/etc/alertmanager-fallback-config.yaml
-      - mimir-1-data:/data
-
-  mimir-2:
-    image: grafana/mimir:latest
-    command: ["-config.file=/etc/mimir.yaml"]
-    hostname: mimir-2
-    depends_on:
-      - minio
-    volumes:
-      - ./config/mimir.yaml:/etc/mimir.yaml
-      - ./config/alertmanager-fallback-config.yaml:/etc/alertmanager-fallback-config.yaml
-      - mimir-2-data:/data
-
-  mimir-3:
-    image: grafana/mimir:latest
-    command: ["-config.file=/etc/mimir.yaml"]
-    hostname: mimir-3
-    depends_on:
-      - minio
-    volumes:
-      - ./config/mimir.yaml:/etc/mimir.yaml
-      - ./config/alertmanager-fallback-config.yaml:/etc/alertmanager-fallback-config.yaml
-      - mimir-3-data:/data
+      - 9009:8080
 
 volumes:
-  mimir-1-data:
-  mimir-2-data:
-  mimir-3-data:
+  mimir-data:
   minio-data:

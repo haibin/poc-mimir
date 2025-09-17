@@ -28,9 +28,12 @@ ruler_storage:
   s3:
     bucket_name: mimir-ruler
 
-# Use memberlist, a gossip-based protocol, to enable the 3 Mimir replicas to communicate
-memberlist:
-  join_members: [mimir-1, mimir-2, mimir-3]
+
+# Without the ingester config, pushing metrics would fail.
+# By default, it requires 2 live replicas at least.
+ingester:
+  ring:
+    replication_factor: 1
 
 ruler:
   evaluation_interval: 10s
