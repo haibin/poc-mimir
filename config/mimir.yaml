@@ -33,6 +33,7 @@ memberlist:
   join_members: [mimir-1, mimir-2, mimir-3]
 
 ruler:
+  evaluation_interval: 30s
   rule_path: /data/ruler
   alertmanager_url: http://127.0.0.1:8080/alertmanager
   ring:
